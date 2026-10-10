@@ -107,7 +107,15 @@ export default function Page() {
       {view === 'home' && <Home setView={setView} />}
       {view === 'setup' && <Setup setView={setView} />}
       {view === 'scan' && <Scan setView={setView} onAnalyze={startAnalysis} analysisError={analysisError} />}
-      {view === 'analyzing' && <Analyzing photoSrc={photoSrc} />}
+      {view === 'analyzing' && (
+        <Analyzing
+          photoSrc={photoSrc}
+          onCancel={() => {
+            requestRef.current++
+            setView('scan')
+          }}
+        />
+      )}
       {view === 'results' && analysis && (
         <Results
           setView={setView}
