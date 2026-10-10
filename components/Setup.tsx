@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Back } from '@/components/Back'
+import { TRIGGERS_STORAGE_KEY } from '@/lib/analyze-image'
 import type { View } from '@/lib/types'
 
 const triggers = [
@@ -13,6 +14,24 @@ const triggers = [
 
 export function Setup({ setView }: { setView: (v: View) => void }) {
   const [selected, setSelected] = useState<number[]>([0, 1])
+
+  // Load previously saved choices, and save every change so the backend can personalize the score.
+  // Only start saving AFTER the saved choices were loaded, otherwise the defaults overwrite them
+  // (React dev mode runs effects twice, which made the first version lose your choices).
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(TRIGGERS_STORAGE_KEY)
+      if (saved) setSelected(JSON.parse(saved))
+    } catch {}
+    setLoaded(true)
+  }, [])
+  useEffect(() => {
+    if (!loaded) return
+    try {
+      window.localStorage.setItem(TRIGGERS_STORAGE_KEY, JSON.stringify(selected))
+    } catch {}
+  }, [selected, loaded])
 
   return (
     <main className="narrow">
