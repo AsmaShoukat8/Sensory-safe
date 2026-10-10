@@ -17,7 +17,7 @@ export function Analyzing({ photoSrc, onCancel }: { photoSrc: string; onCancel: 
     return () => window.clearInterval(timer)
   }, [])
 
-  const step = STEPS[Math.min(Math.floor(seconds / 3), STEPS.length - 1)]
+  const step = STEPS[Math.min(Math.floor(seconds / 7), STEPS.length - 1)]
 
   return (
     <main className="narrow analyzing" aria-busy="true">
@@ -27,9 +27,9 @@ export function Analyzing({ photoSrc, onCancel }: { photoSrc: string; onCancel: 
         <div>
           <p className="wait-step">{step}...</p>
           <p className="wait-time">
-            Please wait. This usually takes 5 to 20 seconds. Waited {seconds} {seconds === 1 ? 'second' : 'seconds'}.
+            Please wait. This can take up to 40 seconds. Waited {seconds} {seconds === 1 ? 'second' : 'seconds'}.
           </p>
-          {seconds >= 15 && (
+          {seconds >= 30 && (
             <p className="wait-time">Still working. The first scan can be slower while the server wakes up.</p>
           )}
         </div>
