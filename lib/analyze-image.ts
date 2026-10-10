@@ -28,7 +28,7 @@ export async function analyzeImage(file: File): Promise<AnalysisResult> {
   const form = new FormData()
   form.append('image', file)
   form.append('triggers', JSON.stringify(savedTriggers()))
-  const res = await fetch(`${API_URL}/api/analyze`, { method: 'POST', body: form })
+  const res = await fetch(`${API_URL}/api/analyze`, { method: 'POST', body: form, signal: AbortSignal.timeout(90_000) })
   if (!res.ok) throw new Error(`Analysis failed (${res.status})`)
   return (await res.json()) as AnalysisResult
 }

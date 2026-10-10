@@ -10,7 +10,7 @@ type PhotoProps = {
 
 export function Photo({ src, overlay = false, analysis }: PhotoProps) {
   return (
-    <div className="photo-wrap">
+    <div className={'photo-wrap' + (analysis ? ' natural' : '')}>
       <img src={src} alt="The room photo selected for this scan" />
       {overlay && (
         <>
@@ -28,14 +28,14 @@ export function Photo({ src, overlay = false, analysis }: PhotoProps) {
               <span
                 key={f.name}
                 className="spot"
-                style={{ left: `${f.spots[0].x}%`, top: `${f.spots[0].y}%` }}
+                style={{ left: `${Math.min(f.spots[0].x, 40)}%`, top: `${Math.min(f.spots[0].y, 84)}%` }}
               >
                 {f.name}: {f.note}
               </span>
             ))}
           <span
             className="calm-area"
-            style={{ left: `${analysis.calmestArea.x}%`, top: `${analysis.calmestArea.y}%`, bottom: 'auto' }}
+            style={{ left: `${Math.min(analysis.calmestArea.x, 40)}%`, top: `${Math.min(analysis.calmestArea.y, 84)}%`, bottom: 'auto' }}
           >
             Calmest area: {analysis.calmestArea.note}
           </span>
